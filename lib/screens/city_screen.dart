@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:clima/services/weather.dart';
 import 'package:clima/utilities/constants.dart';
+import 'package:flutter/material.dart';
 
 class CityScreen extends StatefulWidget {
   @override
@@ -7,6 +8,8 @@ class CityScreen extends StatefulWidget {
 }
 
 class _CityScreenState extends State<CityScreen> {
+  String cityName;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +27,9 @@ class _CityScreenState extends State<CityScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: Icon(
                     Icons.arrow_back_ios,
                     size: 50.0,
@@ -33,10 +38,31 @@ class _CityScreenState extends State<CityScreen> {
               ),
               Container(
                 padding: EdgeInsets.all(20.0),
-                child: null,
+                child: TextField(
+                  onChanged: (String input) {
+                    cityName = input;
+                  },
+                  style: TextStyle(color: Colors.black),
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: "Enter city name.",
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10)),
+                      icon: Icon(
+                        Icons.location_city,
+                        color: Colors.grey,
+                      )),
+                ),
               ),
               FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  var weatherData =
+                      WeatherModel().getWeatherDataByLocation(cityName);
+                  Navigator.pop(context, weatherData);
+                },
                 child: Text(
                   'Get Weather',
                   style: kButtonTextStyle,
